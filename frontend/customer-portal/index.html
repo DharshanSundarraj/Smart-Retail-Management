@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Retail - Customer Store</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">
+      <i class="fa-solid fa-bag-shopping brand-icon"></i>
+      <h1>Smart Retail <span>Store</span></h1>
+    </div>
+    <div class="cart-summary">
+      <i class="fa-solid fa-cart-shopping"></i> Cart (<span id="cart-count">0</span>)
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="banner-card" id="customer-welcome">
+      <h2>Welcome to Smart Retail Store!</h2>
+      <p>Loading account details...</p>
+    </section>
+
+    <main class="store-layout">
+      <section class="products-section">
+        <h3>Featured Catalog</h3>
+        <div id="store-products-grid" class="store-grid"></div>
+      </section>
+
+      <aside class="cart-sidebar">
+        <h3>My Cart</h3>
+        <table>
+          <tbody id="customer-cart-body">
+            <tr class="empty-row"><td colspan="2">Your cart is empty.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="checkout-box">
+          <div class="total-row">
+            <span>Total:</span>
+            <strong id="customer-total">$0.00</strong>
+          </div>
+          <button onclick="placeCustomerOrder()" class="btn-checkout">Checkout Now</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="js/api-client.js"></script>
+  <script src="js/customer-app.js"></script>
+</body>
+</html>
