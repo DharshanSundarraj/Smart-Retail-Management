@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Retail Management - Admin Portal</title>
+  <link rel="stylesheet" href="css/admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="brand">
+      <i class="fa-solid fa-store brand-icon"></i>
+      <h1>Smart Retail <span>Admin</span></h1>
+    </div>
+    <div class="user-profile">
+      <i class="fa-solid fa-circle-user"></i>
+      <span>Store Manager</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Top KPI Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-box"></i></div>
+        <div class="stat-info">
+          <h3>Total Products</h3>
+          <p id="stat-total-products">--</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-cash-register"></i></div>
+        <div class="stat-info">
+          <h3>POS Active</h3>
+          <p>Ready</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="stat-info">
+          <h3>Low Stock Alert</h3>
+          <p id="stat-low-stock">0 Items</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Grid: POS & Inventory -->
+    <div class="dashboard-grid">
+
+      <!-- POS Billing Terminal Section -->
+      <section class="card pos-section">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-cart-shopping"></i> POS Checkout</h2>
+          <span class="badge">Live Terminal</span>
+        </div>
+
+        <div class="pos-content">
+          <div class="product-selection">
+            <label for="pos-product-select">Available Products</label>
+            <select id="pos-product-select" class="form-control">
+              <option value="">-- Select Product --</option>
+            </select>
+            
+            <div class="qty-add-group">
+              <input type="number" id="pos-qty-input" class="form-control" value="1" min="1">
+              <button id="pos-add-btn" class="btn btn-primary">Add Item</button>
+            </div>
+          </div>
+
+          <h4>Current Cart</h4>
+          <div class="table-container">
+            <table class="data-table" id="pos-cart-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="5" class="empty-msg">No items added to cart yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pos-footer">
+            <div class="total-display">
+              <span>Subtotal</span>
+              <h2 id="pos-total-price">$0.00</h2>
+            </div>
+            <button id="pos-checkout-btn" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Complete Sale</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inventory Management Section -->
+      <section class="card inventory-section">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-boxes-stacked"></i> Inventory Overview</h2>
+          <button id="refresh-inventory-btn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="inventory-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Stock Quantity</th>
+                <th>Unit Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" class="empty-msg">Loading inventory data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Employee Management Section -->
+    <section class="card employee-section">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-users"></i> Employee Management</h2>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table" id="employee-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4" class="empty-msg"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <!-- Employee Management Section -->
+<section class="dashboard-section">
+  <h3><i class="fa-solid fa-users"></i> Employee Management</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="employee-table-body">
+      <tr><td>1</td><td>Alice Smith</td><td>Store Manager</td><td><span class="badge active">Active</span></td></tr>
+      <tr><td>2</td><td>Bob Jones</td><td>Cashier</td><td><span class="badge shift">On Shift</span></td></tr>
+      <tr><td>3</td><td>Charlie Brown</td><td>Inventory Specialist</td><td><span class="badge off">Off Duty</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/api-client.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/pos-billing.js"></script>
+</body>
+</html>
