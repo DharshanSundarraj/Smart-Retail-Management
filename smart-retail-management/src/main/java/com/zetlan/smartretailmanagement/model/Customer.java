@@ -20,6 +20,9 @@ public class Customer {
     @Column(unique = true, length = 20)
     private String phone;
 
+    @Column(columnDefinition = "TEXT")
+    private String address;
+
     @Column(nullable = false)
     private Integer loyaltyPoints = 0;
 
@@ -27,7 +30,12 @@ public class Customer {
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() { this.createdAt = LocalDateTime.now(); }
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.loyaltyPoints == null) {
+            this.loyaltyPoints = 0;
+        }
+    }
 
     public Customer() {}
 
@@ -40,6 +48,10 @@ public class Customer {
     public void setEmail(String email) { this.email = email; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
     public Integer getLoyaltyPoints() { return loyaltyPoints; }
     public void setLoyaltyPoints(Integer loyaltyPoints) { this.loyaltyPoints = loyaltyPoints; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

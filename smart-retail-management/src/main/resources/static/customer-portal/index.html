@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZetLan Store - Customer Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+<!-- ================= STICKY TOP NAVBAR ================= -->
+<header class="navbar">
+  <div class="brand">
+    <i class="fa-solid fa-store brand-icon"></i>
+    <h1><span class="zetlan-highlight">ZetLan</span> Store</h1>
+  </div>
+
+  <div id="cart-toggle-btn" class="cart-summary" title="View Shopping Cart">
+    <i class="fa-solid fa-cart-shopping cart-icon-left"></i>
+    <span>Cart (<strong id="cart-count">0</strong>)</span>
+  </div>
+</header>
+
+<!-- ================= HERO LANDING BANNER ================= -->
+<section class="hero-section fade-in">
+  <div class="hero-content">
+    <span class="hero-badge"><i class="fa-solid fa-bolt text-accent"></i> Real-Time Omnichannel Retail</span>
+    <h2>Next-Gen Retail Experience</h2>
+    <p>Browse our live catalog, reserve premium items, and experience seamless real-time stock synchronization.</p>
+  </div>
+  <div class="hero-visuals">
+    <div class="floating-item float-1">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="Watch Preview">
+    </div>
+    <div class="floating-item float-2">
+      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" alt="Headphones Preview">
+    </div>
+    <div class="floating-item float-3">
+      <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=400&q=80" alt="Smartwatch Preview">
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT CATALOG GRID ================= -->
+<main class="container fade-in delay-1">
+  <div id="catalog-container">
+    <p class="empty-msg">Loading storefront catalog...</p>
+  </div>
+</main>
+
+<!-- ================= SLIDE-IN SHOPPING CART SIDEBAR ================= -->
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="slide-cart" class="cart-sidebar">
+  <div class="cart-header">
+    <h3><i class="fa-solid fa-basket-shopping"></i> Your Cart</h3>
+    <button id="close-cart-btn" class="close-btn" title="Close Cart">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="cart-table-wrapper" id="customer-cart-body">
+    <div class="empty-cart-msg">Your cart is empty.</div>
+  </div>
+
+  <div class="checkout-box">
+    <div class="total-row">
+      <span>Selected Total</span>
+      <strong id="customer-total">₹0.00</strong>
+    </div>
+    <button type="button" class="btn-checkout" onclick="processCustomerCheckout()">
+      <i class="fa-solid fa-credit-card btn-icon-left"></i> Complete Order
+    </button>
+  </div>
+</aside>
+
+<!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+<div id="toast-container"></div>
+
+<script src="js/api-client.js"></script>
+<script src="js/customer-app.js"></script>
+</body>
+</html>

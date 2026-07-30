@@ -1,10 +1,12 @@
 package com.zetlan.smartretailmanagement.service;
 
+import com.zetlan.smartretailmanagement.dto.CategoryDTO;
 import com.zetlan.smartretailmanagement.model.Category;
 import com.zetlan.smartretailmanagement.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -15,12 +17,13 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category createCategory(Category category) {
-        // Because Category is a simple lookup table, we can save the entity directly
-        return categoryRepository.save(category);
-    }
-
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll().stream().map(category -> {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setId(category.getId());
+            dto.setName(category.getName());
+            dto.setDescription(category.getDescription());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

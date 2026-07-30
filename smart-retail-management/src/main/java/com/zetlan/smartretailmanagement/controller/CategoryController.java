@@ -1,6 +1,6 @@
 package com.zetlan.smartretailmanagement.controller;
 
-import com.zetlan.smartretailmanagement.model.Category;
+import com.zetlan.smartretailmanagement.dto.CategoryDTO;
 import com.zetlan.smartretailmanagement.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,8 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
-        Category createdCategory = categoryService.createCategory(category);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
-    }
-
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
 }

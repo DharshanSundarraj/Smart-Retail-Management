@@ -8,8 +8,7 @@ public class EmployeeDTO {
     private Boolean isActive;
     private Long roleId;
     private String roleName;
-
-    // Notice we do NOT include the password here. This prevents accidentally sending it to the frontend.
+    private String password;
 
     public EmployeeDTO() {}
 
@@ -27,4 +26,6 @@ public class EmployeeDTO {
     public void setRoleId(Long roleId) { this.roleId = roleId; }
     public String getRoleName() { return roleName; }
     public void setRoleName(String roleName) { this.roleName = roleName; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

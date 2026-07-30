@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZetLan Auth | Portal</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body class="auth-wrapper">
+
+<div class="auth-card">
+    <div class="auth-header">
+        <i class="fa-solid fa-store"></i>
+        <h1><span class="zetlan-highlight">ZetLan</span> Portal</h1>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form">
+        <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <div class="input-with-icon">
+                <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+                <i class="fa-regular fa-eye-slash toggle-password" onclick="togglePasswordVisibility('login-password', this)"></i>
+            </div>
+        </div>
+
+        <a class="forgot-link" onclick="toggleAuth('forgot')">Forgot Password?</a>
+
+        <button type="submit" class="auth-btn">Sign In</button>
+        <div class="auth-toggle">
+            New to ZetLan? <a onclick="toggleAuth('register')">Create an account</a>
+        </div>
+    </form>
+
+    <!-- Register Form -->
+    <form id="register-form">
+        <div class="form-group">
+            <label for="reg-name">Full Name</label>
+            <input type="text" id="reg-name" class="form-control" placeholder="Enter full name" required>
+        </div>
+        <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <input type="email" id="reg-email" class="form-control" placeholder="Enter email address" required>
+        </div>
+
+        <div class="form-group">
+            <label>Role</label>
+            <!-- Fully Custom Dropdown -->
+            <div class="custom-dropdown" id="role-dropdown">
+                <div class="dropdown-selected">Select a role</div>
+                <div class="dropdown-options">
+                    <div class="dropdown-option" data-value="STAFF">Staff</div>
+                    <div class="dropdown-option" data-value="MANAGER">Store Manager</div>
+                    <div class="dropdown-option" data-value="ADMIN">System Admin</div>
+                </div>
+                <input type="hidden" id="reg-role" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div class="input-with-icon">
+                <input type="password" id="reg-password" class="form-control" placeholder="Create a password" required>
+                <i class="fa-regular fa-eye-slash toggle-password" onclick="togglePasswordVisibility('reg-password', this)"></i>
+            </div>
+        </div>
+        <button type="submit" class="auth-btn">Register User</button>
+        <div class="auth-toggle">
+            Already registered? <a onclick="toggleAuth('login')">Sign in here</a>
+        </div>
+    </form>
+
+    <!-- Forgot Password Form -->
+    <form id="forgot-form">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; text-align: center;">Enter your registered email to receive an OTP.</p>
+
+        <div class="form-group">
+            <label for="forgot-email">Registered Email</label>
+            <input type="email" id="forgot-email" class="form-control" placeholder="Enter email address" required>
+        </div>
+
+        <div id="otp-section" style="display: none;">
+            <div class="form-group">
+                <label for="forgot-otp">Enter 6-Digit OTP</label>
+                <input type="text" id="forgot-otp" class="form-control" placeholder="XXXXXX" maxlength="6">
+            </div>
+            <div class="form-group">
+                <label for="forgot-new-password">New Password</label>
+                <div class="input-with-icon">
+                    <input type="password" id="forgot-new-password" class="form-control" placeholder="Create new password">
+                    <i class="fa-regular fa-eye-slash toggle-password" onclick="togglePasswordVisibility('forgot-new-password', this)"></i>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="btn-request-otp" class="auth-btn" style="background: var(--text-muted);">Request OTP</button>
+        <button type="submit" id="btn-reset-password" class="auth-btn" style="display: none;">Reset Password</button>
+
+        <div class="auth-toggle">
+            Remembered it? <a onclick="toggleAuth('login')">Back to Sign In</a>
+        </div>
+    </form>
+
+</div>
+
+<div id="toast-container"></div>
+<script src="js/api-client.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -21,7 +21,7 @@ public class Employee {
     private String email;
 
     @Column(nullable = false)
-    private String password; // Will hold hashed passwords later
+    private String password;
 
     @Column(nullable = false)
     private Boolean isActive = true;
@@ -36,6 +36,9 @@ public class Employee {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
     }
 
     public Employee() {}

@@ -18,17 +18,29 @@ public class SupplierController {
         this.supplierService = supplierService;
     }
 
-    // POST: http://localhost:8080/api/suppliers
     @PostMapping
     public ResponseEntity<SupplierDTO> addSupplier(@RequestBody SupplierDTO supplierDTO) {
-        SupplierDTO createdSupplier = supplierService.createSupplier(supplierDTO);
-        return new ResponseEntity<>(createdSupplier, HttpStatus.CREATED);
+        return new ResponseEntity<>(supplierService.createSupplier(supplierDTO), HttpStatus.CREATED);
     }
 
-    // GET: http://localhost:8080/api/suppliers
     @GetMapping
     public ResponseEntity<List<SupplierDTO>> getAllSuppliers() {
-        List<SupplierDTO> suppliers = supplierService.getAllSuppliers();
-        return new ResponseEntity<>(suppliers, HttpStatus.OK);
+        return new ResponseEntity<>(supplierService.getAllSuppliers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SupplierDTO> getSupplierById(@PathVariable Long id) {
+        return new ResponseEntity<>(supplierService.getSupplierById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SupplierDTO> updateSupplier(@PathVariable Long id, @RequestBody SupplierDTO dto) {
+        return new ResponseEntity<>(supplierService.updateSupplier(id, dto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) {
+        supplierService.deleteSupplier(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

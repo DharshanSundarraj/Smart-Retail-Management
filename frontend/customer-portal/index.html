@@ -3,55 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Retail - Customer Store</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <title>ZetLan Smart Retail Store</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../../../../../../frontend/customer-portal/css/styles.css">
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="brand">
-      <i class="fa-solid fa-bag-shopping brand-icon"></i>
-      <h1>Smart Retail <span>Store</span></h1>
-    </div>
-    <div class="cart-summary">
-      <i class="fa-solid fa-cart-shopping"></i> Cart (<span id="cart-count">0</span>)
-    </div>
-  </header>
+<!-- Navigation -->
+<header class="navbar">
+  <div class="brand">
+    <i class="fa-solid fa-bag-shopping brand-icon"></i>
+    <h1><span class="zetlan-highlight">ZetLan</span> Smart Retail Store</h1>
+  </div>
+  <div class="cart-summary" id="cart-toggle-btn">
+    <i class="fa-solid fa-cart-shopping"></i> Cart (<span id="cart-count">0</span>)
+  </div>
+</header>
 
-  <div class="container">
-    <section class="banner-card" id="customer-welcome">
-      <h2>Welcome to Smart Retail Store!</h2>
-      <p>Loading account details...</p>
+<!-- Hero Landing Section -->
+<section class="hero-section fade-in" id="customer-welcome">
+  <div class="hero-content">
+    <h2>Welcome to <span class="zetlan-highlight">ZetLan.</span></h2>
+    <p>Discover our featured smart catalog. Experience seamless retail.</p>
+  </div>
+  <!-- Decorative Floating Elements / Carousel Placeholder -->
+  <div class="hero-visuals">
+    <div class="floating-item float-1"></div>
+    <div class="floating-item float-2"></div>
+    <div class="floating-item float-3"></div>
+  </div>
+</section>
+
+<!-- Main Catalog -->
+<div class="container fade-in delay-1">
+  <main class="store-layout">
+    <!-- Categories will be dynamically injected here -->
+    <section class="products-section" id="catalog-container">
+      <!-- JS injects category blocks here -->
     </section>
+  </main>
+</div>
 
-    <main class="store-layout">
-      <section class="products-section">
-        <h3>Featured Catalog</h3>
-        <div id="store-products-grid" class="store-grid"></div>
-      </section>
-
-      <aside class="cart-sidebar">
-        <h3>My Cart</h3>
-        <table>
-          <tbody id="customer-cart-body">
-            <tr class="empty-row"><td colspan="2">Your cart is empty.</td></tr>
-          </tbody>
-        </table>
-
-        <div class="checkout-box">
-          <div class="total-row">
-            <span>Total:</span>
-            <strong id="customer-total">$0.00</strong>
-          </div>
-          <button onclick="placeCustomerOrder()" class="btn-checkout">Checkout Now</button>
-        </div>
-      </aside>
-    </main>
+<!-- Slide-In Cart Overlay & Sidebar -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<aside class="cart-sidebar offcanvas" id="slide-cart">
+  <div class="cart-header">
+    <h3>My Cart</h3>
+    <button class="close-btn" id="close-cart-btn"><i class="fa-solid fa-xmark"></i></button>
   </div>
 
-  <script src="js/api-client.js"></script>
-  <script src="js/customer-app.js"></script>
+  <div class="cart-table-wrapper">
+    <table>
+      <tbody id="customer-cart-body">
+      <tr class="empty-row"><td colspan="2">Your cart is empty.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="checkout-box">
+    <div class="total-row">
+      <span>Total</span>
+      <strong id="customer-total">$0.00</strong>
+    </div>
+    <button onclick="processCustomerCheckout()" class="btn-checkout">Checkout Now</button>
+  </div>
+</aside>
+
+<!-- Custom Popup Container -->
+<div id="toast-container"></div>
+
+<script src="../../../../../../frontend/customer-portal/js/api-client.js"></script>
+<script src="../../../../../../frontend/customer-portal/js/customer-app.js"></script>
 </body>
 </html>

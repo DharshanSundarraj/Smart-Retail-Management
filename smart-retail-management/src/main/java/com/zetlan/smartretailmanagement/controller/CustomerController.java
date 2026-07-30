@@ -1,8 +1,7 @@
 package com.zetlan.smartretailmanagement.controller;
 
-import com.zetlan.smartretailmanagement.exception.ResourceNotFoundException;
-import com.zetlan.smartretailmanagement.model.Customer;
-import com.zetlan.smartretailmanagement.repository.CustomerRepository;
+import com.zetlan.smartretailmanagement.dto.CustomerDTO;
+import com.zetlan.smartretailmanagement.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,29 +12,41 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerController {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    public CustomerController(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(customerService.createCustomer(customerDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        return new ResponseEntity<>(customerRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+        return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
-    // Quick endpoint to update loyalty points after a purchase
-    @PutMapping("/{id}/points")
-    public ResponseEntity<Customer> updateLoyaltyPoints(@PathVariable Long id, @RequestParam Integer pointsToAdd) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
+    }
 
-        customer.setLoyaltyPoints(customer.getLoyaltyPoints() + pointsToAdd);
-        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(customerService.updateCustomer(id, customerDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomer(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}/points")
+    public ResponseEntity<CustomerDTO> updateLoyaltyPoints(@PathVariable Long id,
+                                                           @RequestParam(defaultValue = "0") Integer pointsToAdd) {
+        return new ResponseEntity<>(customerService.addLoyaltyPoints(id, pointsToAdd), HttpStatus.OK);
     }
 }

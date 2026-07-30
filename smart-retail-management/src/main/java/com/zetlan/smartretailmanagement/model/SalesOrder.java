@@ -1,6 +1,9 @@
 package com.zetlan.smartretailmanagement.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,14 +24,20 @@ public class SalesOrder {
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private String status; // e.g., COMPLETED, REFUNDED
+    private String status;
 
     // The cashier who processed this order
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = true) // Nullable in case employee gets deleted
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Employee employee;
 
-    // If the order is deleted, its items are deleted automatically (orphanRemoval)
+    // NEW: The customer who bought the items (Nullable for Walk-ins)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL) // Allows deleting the customer without breaking the receipt
+    private Customer customer;
+
     @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -42,6 +51,7 @@ public class SalesOrder {
 
     public SalesOrder() {}
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getOrderNumber() { return orderNumber; }
@@ -52,6 +62,8 @@ public class SalesOrder {
     public void setStatus(String status) { this.status = status; }
     public Employee getEmployee() { return employee; }
     public void setEmployee(Employee employee) { this.employee = employee; }
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
     public List<OrderItem> getOrderItems() { return orderItems; }
     public void setOrderItems(List<OrderItem> orderItems) { this.orderItems = orderItems; }
     public LocalDateTime getCreatedAt() { return createdAt; }

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZetLan Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+<!-- Left Navigation Backdrop Overlay -->
+<div id="sidebar-overlay" class="overlay"></div>
+
+<!-- Right User Profile Backdrop Overlay -->
+<div id="user-menu-overlay" class="overlay"></div>
+
+<!-- ================= EXPANDED AVATAR SLIDE-IN SIDEBAR ================= -->
+<aside id="user-slide-menu" class="slide-menu-left user-slide-drawer">
+  <div class="menu-header">
+    <div>
+      <h3 id="dynamic-user-name">Loading...</h3>
+    </div>
+    <button id="close-user-menu" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <ul class="menu-options-list">
+    <li class="menu-item-spaced">
+      <a href="#" onclick="openProfileModal()" class="avatar-nav-link">
+        <i class="fa-solid fa-id-badge text-accent"></i>
+        <span>My Profile & Role</span>
+      </a>
+    </li>
+    <li class="menu-item-spaced">
+      <a href="#" onclick="openPOSFromAvatar()" class="avatar-nav-link">
+        <i class="fa-solid fa-cash-register text-success"></i>
+        <span>POS Terminal Shortcut</span>
+      </a>
+    </li>
+    <li class="menu-item-spaced">
+      <a href="#" onclick="navigateToSettingsFromAvatar()" class="avatar-nav-link">
+        <i class="fa-solid fa-sliders text-muted"></i>
+        <span>System Preferences</span>
+      </a>
+    </li>
+    <li class="menu-item-spaced">
+      <a href="#" onclick="fetchDashboardData(true)" class="avatar-nav-link">
+        <i class="fa-solid fa-rotate text-muted"></i>
+        <span>Sync Activity Logs</span>
+      </a>
+    </li>
+    <li class="menu-item-divider menu-action-item">
+      <a href="#" onclick="logoutUser()" class="logout-link">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span>Secure Sign Out</span>
+      </a>
+    </li>
+    <li class="menu-item-spaced">
+      <a href="#" onclick="deleteMyAccount()" class="logout-link text-danger">
+        <i class="fa-solid fa-user-xmark"></i>
+        <span>Delete Account</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="menu-footer">
+    v0.1.0
+  </div>
+</aside>
+
+<!-- ================= OFF-CANVAS COLLAPSIBLE LEFT NAVIGATION ================= -->
+<aside id="sidebar-nav-drawer" class="sidebar-nav">
+  <div class="brand sidebar-brand-row">
+    <div class="brand-title-group">
+      <i class="fa-solid fa-store brand-icon"></i>
+      <h1><span class="zetlan-highlight">ZetLan</span> Admin</h1>
+    </div>
+    <button id="close-sidebar-btn" class="icon-btn close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <ul class="nav-links" id="sidebar-menu">
+    <li data-privilege="ALL"><a href="#" data-target="dashboard-view" class="active"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+    <li data-privilege="ALL"><a href="#" data-target="products-view"><i class="fa-solid fa-boxes-stacked"></i> Products</a></li>
+    <li data-privilege="ALL"><a href="#" data-target="orders-view"><i class="fa-solid fa-cart-flatbed"></i> Sales Orders</a></li>
+    <li data-privilege="ALL"><a href="#" data-target="customers-view"><i class="fa-solid fa-users"></i> Customers</a></li>
+    <li data-privilege="MANAGER,ADMIN"><a href="#" data-target="suppliers-view"><i class="fa-solid fa-truck-field"></i> Suppliers</a></li>
+    <li data-privilege="ADMIN"><a href="#" data-target="employees-view"><i class="fa-solid fa-user-shield"></i> Staff & Roles</a></li>
+    <li data-privilege="ADMIN"><a href="#" data-target="settings-view"><i class="fa-solid fa-gear"></i> Settings</a></li>
+  </ul>
+</aside>
+
+<!-- ================= FULL-WIDTH MAIN CONTENT AREA ================= -->
+<div class="app-layout">
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-search">
+        <button id="hamburger-btn" class="icon-btn hamburger-btn" title="Toggle Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h2 id="current-page-title" class="page-title">Dashboard Overview</h2>
+      </div>
+      <div class="header-actions">
+        <div class="user-profile" id="avatar-btn" title="Open Account Menu">
+          <i class="fa-solid fa-circle-user profile-icon"></i>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-container">
+
+      <!-- DASHBOARD VIEW -->
+      <section id="dashboard-view" class="view-section active fade-in">
+        <section class="kpi-row">
+          <div class="card kpi-card">
+            <div class="kpi-text">
+              <h3>Total Inventory Value</h3>
+              <p id="stat-inventory-value">Fetching...</p>
+            </div>
+            <div class="stat-icon blue"><i class="fa-solid fa-wallet"></i></div>
+          </div>
+          <div class="card kpi-card">
+            <div class="kpi-text">
+              <h3>Active Products</h3>
+              <p id="stat-total-products">--</p>
+            </div>
+            <div class="stat-icon green"><i class="fa-solid fa-boxes-stacked"></i></div>
+          </div>
+          <div class="card kpi-card">
+            <div class="kpi-text">
+              <h3>Reorder Alerts</h3>
+              <p id="stat-low-stock">--</p>
+            </div>
+            <div class="stat-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          </div>
+        </section>
+
+        <div class="bento-layout">
+          <div class="primary-column">
+            <section class="card">
+              <div class="card-header">
+                <h2><i class="fa-solid fa-chart-line"></i> Recent Operations</h2>
+                <button class="btn btn-secondary btn-sm" onclick="fetchDashboardData(true)"><i class="fa-solid fa-rotate"></i> Sync</button>
+              </div>
+              <div id="recent-operations-container">
+                <p class="empty-msg">Loading operational data...</p>
+              </div>
+            </section>
+          </div>
+          <aside class="widgets-column">
+            <div class="card widget-card">
+              <div class="card-header border-none pb-0">
+                <h3 class="widget-title">Low Stock Alerts</h3>
+              </div>
+              <div id="alerts-widget-container" class="widget-body">
+                <p class="empty-msg">All stock is healthy.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- PRODUCTS VIEW -->
+      <section id="products-view" class="view-section fade-in">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-boxes-stacked"></i> Product Catalog</h2>
+            <button class="btn btn-primary rbac-add"><i class="fa-solid fa-plus"></i> Add Product</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Details</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+              <tbody id="products-table-body"><tr><td colspan="6" class="empty-msg">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- SALES ORDERS VIEW -->
+      <section id="orders-view" class="view-section fade-in">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-cart-flatbed"></i> Sales Orders</h2>
+            <button class="btn btn-primary rbac-add"><i class="fa-solid fa-plus"></i> New Order</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="orders-table-body"><tr><td colspan="6" class="empty-msg">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- CUSTOMERS VIEW -->
+      <section id="customers-view" class="view-section fade-in">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-users"></i> Customer Database</h2>
+            <button class="btn btn-primary rbac-add"><i class="fa-solid fa-plus"></i> Add Customer</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
+              <tbody id="customers-table-body"><tr><td colspan="5" class="empty-msg">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- SUPPLIERS VIEW -->
+      <section id="suppliers-view" class="view-section fade-in">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-truck-field"></i> Supplier Management</h2>
+            <button class="btn btn-primary rbac-add"><i class="fa-solid fa-plus"></i> Add Supplier</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Company Name</th><th>Contact Info</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="suppliers-table-body"><tr><td colspan="5" class="empty-msg">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- EMPLOYEES & ROLES VIEW -->
+      <section id="employees-view" class="view-section fade-in">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-user-shield"></i> Staff & Role Assignments</h2>
+            <button class="btn btn-primary rbac-add" onclick="showCustomToast('Admins must be registered via the secure Auth Portal.')"><i class="fa-solid fa-shield"></i> Portal Registration</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="employees-table-body"><tr><td colspan="6" class="empty-msg">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- SETTINGS VIEW -->
+      <section id="settings-view" class="view-section fade-in">
+        <section class="card pb-lg">
+          <div class="card-header border-light pb-md">
+            <h2><i class="fa-solid fa-gear"></i> System Settings</h2>
+            <button class="btn btn-primary" onclick="saveSystemSettings()"><i class="fa-solid fa-floppy-disk"></i> Save Configurations</button>
+          </div>
+
+          <div class="settings-grid">
+            <div>
+              <h3 class="settings-section-title">General Preferences</h3>
+              <div class="form-group">
+                <label for="setting-store-name">Company / Store Name</label>
+                <input type="text" id="setting-store-name" class="form-control" value="ZetLan Smart Retail Store">
+              </div>
+              <div class="form-group">
+                <label>Default Currency Symbol</label>
+                <div class="custom-dropdown mb-0">
+                  <div class="dropdown-selected bg-dominant">₹ (Indian Rupee)</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="setting-tax-rate">Global Sales Tax Rate (%)</label>
+                <input type="number" id="setting-tax-rate" class="form-control" value="18" min="0" max="100">
+              </div>
+              <div class="form-group mt-md">
+                <label for="setting-loyalty-rate">Loyalty Points Conversion</label>
+                <p class="settings-help-text">Points earned per ₹100 spent by registered customers.</p>
+                <input type="number" id="setting-loyalty-rate" class="form-control" value="1" min="1">
+              </div>
+            </div>
+
+            <div>
+              <h3 class="settings-section-title">System Modules</h3>
+              <div class="settings-toggle-row">
+                <div>
+                  <strong class="settings-toggle-title">Dark Mode Interface</strong>
+                  <span class="settings-help-text">Enforce dark theme across terminal.</span>
+                </div>
+                <input type="checkbox" id="setting-dark-mode" checked class="settings-checkbox">
+              </div>
+              <div class="settings-toggle-row">
+                <div>
+                  <strong class="settings-toggle-title">Low Stock Email Alerts</strong>
+                  <span class="settings-help-text">Notify admins when inventory falls below 10.</span>
+                </div>
+                <input type="checkbox" id="setting-email-alerts" checked class="settings-checkbox">
+              </div>
+              <div class="settings-toggle-row mb-0">
+                <div>
+                  <strong class="settings-toggle-title">Auto-Backup Database</strong>
+                  <span class="settings-help-text">Generate SQL dumps nightly at 12:00 AM.</span>
+                </div>
+                <input type="checkbox" id="setting-auto-backup" checked class="settings-checkbox">
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ================= MY PROFILE & ROLE MODAL ================= -->
+<div id="profile-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <h2 class="modal-title"><i class="fa-solid fa-id-badge text-accent"></i> My Account Profile</h2>
+      <button class="icon-btn" onclick="closeProfileModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body profile-modal-body">
+      <div class="profile-avatar-circle">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <h3 id="profile-modal-name" class="profile-modal-name">System User</h3>
+      <div id="profile-modal-role" class="badge active mb-md">ADMIN ACCESS</div>
+
+      <div class="profile-info-grid">
+        <div class="profile-info-row">
+          <span class="text-muted">Status</span>
+          <strong class="text-success"><i class="fa-solid fa-circle-check"></i> Active & Verified</strong>
+        </div>
+        <div class="profile-info-row">
+          <span class="text-muted">Security Level</span>
+          <strong id="profile-modal-privileges">Full Control</strong>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer confirm-footer">
+      <button class="btn btn-secondary w-100" onclick="closeProfileModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ORDER DETAILS MODAL ================= -->
+<div id="order-details-modal" class="modal-overlay">
+  <div class="modal-container order-detail-modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title"><i class="fa-solid fa-receipt"></i> Order <span id="detail-order-number" class="text-accent"></span></h2>
+      <button class="icon-btn" onclick="closeOrderDetailsModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="order-detail-body">
+      <div class="order-meta-row">
+        <div class="order-meta-col">
+          <p class="meta-label">Customer Account</p>
+          <strong id="detail-customer" class="meta-value"></strong>
+        </div>
+        <div class="order-meta-col text-right">
+          <p class="meta-label">Date & Time / Cashier</p>
+          <div id="detail-meta" class="meta-value-block"></div>
+        </div>
+      </div>
+
+      <div class="order-items-wrapper">
+        <h4 class="order-items-title"><i class="fa-solid fa-basket-shopping"></i> Purchased Items</h4>
+        <div class="table-container clean-table-box">
+          <table class="data-table m-0">
+            <thead>
+            <tr>
+              <th>Item Description</th>
+              <th class="text-center">Qty</th>
+              <th class="text-right">Price</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+            </thead>
+            <tbody id="detail-items-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="order-detail-footer">
+        <div class="total-summary-box">
+          <span class="summary-label">Grand Total</span>
+          <strong id="detail-total" class="summary-total"></strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= 2-STEP POINT OF SALE (POS) MODAL ================= -->
+<div id="pos-modal" class="modal-overlay">
+  <div class="modal-container modal-lg">
+    <div class="modal-header pos-step-header">
+      <h2 class="modal-title"><i class="fa-solid fa-cash-register"></i> Terminal Checkout</h2>
+
+      <div class="pos-progress-container">
+        <div id="pos-step-indicator-1" class="pos-step-badge active">
+          <span class="step-num">1</span> Select Items
+        </div>
+        <div class="pos-step-divider"></div>
+        <div id="pos-step-indicator-2" class="pos-step-badge">
+          <span class="step-num">2</span> Review & Payment
+        </div>
+      </div>
+
+      <button class="icon-btn" onclick="closePOSModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- STEP 1: CATALOG SELECTION -->
+    <div id="pos-step-1-view" class="pos-step-view active">
+      <div class="pos-catalog-wrapper">
+        <div class="pos-search-bar-row">
+          <input type="text" id="pos-search" class="form-control pos-search-input" placeholder="Search product catalog by name or SKU...">
+        </div>
+
+        <div id="pos-product-grid" class="pos-grid"></div>
+      </div>
+
+      <div class="pos-step-footer">
+        <div class="pos-cart-summary-pill">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="pos-step1-count-badge" class="font-bold">0 Items</span>
+          <span id="pos-step1-total-badge" class="pos-pill-total">₹0.00</span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="goToPOSStep(2)">
+          <span>Next: Review Cart</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: CART REVIEW & SEARCHABLE CUSTOMERS -->
+    <div id="pos-step-2-view" class="pos-step-view">
+      <div class="pos-checkout-layout">
+        <div class="pos-cart-table-panel">
+          <div class="pos-panel-title">
+            <h3><i class="fa-solid fa-basket-shopping"></i> Selected Items</h3>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="goToPOSStep(1)"><i class="fa-solid fa-plus"></i> Add More Items</button>
+          </div>
+          <div class="table-container pos-table-scroll">
+            <table class="data-table m-0">
+              <thead>
+              <tr>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Subtotal</th>
+                <th class="text-center">Remove</th>
+              </tr>
+              </thead>
+              <tbody id="pos-cart-table-body">
+              <tr><td colspan="5" class="empty-msg">Your cart is empty</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pos-checkout-panel">
+          <div class="pos-customer-search-board">
+            <label class="pos-label">Assign Customer Account</label>
+
+            <div class="searchable-dropdown" id="pos-customer-search-box">
+              <input type="text" id="pos-customer-search-input" class="form-control" placeholder="Type name, phone, or email..." autocomplete="off">
+              <i class="fa-solid fa-magnifying-glass search-board-icon"></i>
+              <input type="hidden" id="pos-customer-id">
+            </div>
+
+            <div id="pos-customer-options-list" class="searchable-options-list"></div>
+
+            <div id="pos-selected-customer-pill" class="selected-customer-badge">
+              <i class="fa-solid fa-user-check"></i>
+              <span id="pos-selected-customer-name">Guest Checkout (No Account)</span>
+              <button type="button" class="clear-cust-btn" onclick="clearPOSCustomer()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
+          <div class="pos-payment-summary-board">
+            <div class="pos-total-row">
+              <span class="pos-total-label">Grand Total</span>
+              <strong id="pos-total-price" class="pos-total-price">₹0.00</strong>
+            </div>
+
+            <div class="pos-action-buttons">
+              <button type="button" class="btn btn-secondary pos-back-btn" onclick="goToPOSStep(1)">
+                <i class="fa-solid fa-arrow-left"></i> Back
+              </button>
+              <button id="pos-checkout-btn" class="btn btn-primary pos-checkout-btn" onclick="processPOSCheckout()">
+                <i class="fa-solid fa-credit-card btn-icon-left"></i> Process Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= PRODUCT CRUD MODAL ================= -->
+<div id="product-modal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="product-modal-title" class="modal-title"><i class="fa-solid fa-box"></i> Add New Product</h2>
+      <button class="icon-btn" onclick="closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="product-form" class="modal-form">
+      <input type="hidden" id="modal-product-id">
+      <div class="modal-body">
+        <div class="form-group full-width">
+          <label for="modal-product-name">Product Name</label>
+          <input type="text" id="modal-product-name" class="form-control" placeholder="Enter product name" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-product-sku">SKU (Stock Keeping Unit)</label>
+          <input type="text" id="modal-product-sku" class="form-control" placeholder="Enter SKU" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <div class="custom-dropdown" id="modal-category-dropdown">
+            <div class="dropdown-selected" id="modal-category-selected">Select a category</div>
+            <div class="dropdown-options" id="modal-category-options"></div>
+            <input type="hidden" id="modal-product-category" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="modal-product-price">Price (₹)</label>
+          <input type="number" id="modal-product-price" class="form-control" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-product-stock">Initial Stock Quantity</label>
+          <input type="number" id="modal-product-stock" class="form-control" placeholder="0" min="0" required>
+        </div>
+        <div class="form-group full-width">
+          <label for="modal-product-image">Product Image (File Upload)</label>
+          <input type="file" id="modal-product-image" class="form-control" accept="image/png, image/jpeg, image/webp">
+        </div>
+        <div class="form-group full-width">
+          <label for="modal-product-desc">Product Description</label>
+          <textarea id="modal-product-desc" class="form-control textarea-vertical" rows="3" placeholder="Enter product details..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div><button type="button" class="btn btn-secondary" onclick="resetProductForm()">Reset</button></div>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modal-save-btn">Submit Product</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= CUSTOMER CRUD MODAL ================= -->
+<div id="customer-modal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="customer-modal-title" class="modal-title"><i class="fa-solid fa-user-plus"></i> Add New Customer</h2>
+      <button class="icon-btn" onclick="closeCustomerModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="customer-form" class="modal-form">
+      <input type="hidden" id="modal-customer-id">
+      <div class="modal-body">
+        <div class="form-group full-width">
+          <label for="modal-customer-name">Full Name</label>
+          <input type="text" id="modal-customer-name" class="form-control" placeholder="Enter customer's full name" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-customer-email">Email Address</label>
+          <input type="email" id="modal-customer-email" class="form-control" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-customer-phone">Phone Number</label>
+          <input type="text" id="modal-customer-phone" class="form-control" placeholder="Enter phone number" required>
+        </div>
+        <div class="form-group full-width">
+          <label for="modal-customer-address">Mailing Address</label>
+          <textarea id="modal-customer-address" class="form-control textarea-vertical" rows="2" placeholder="Enter full address..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div><button type="button" class="btn btn-secondary" onclick="resetCustomerForm()">Reset</button></div>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modal-customer-save-btn">Submit Customer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= SUPPLIER CRUD MODAL ================= -->
+<div id="supplier-modal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="supplier-modal-title" class="modal-title"><i class="fa-solid fa-truck"></i> Add Supplier</h2>
+      <button class="icon-btn" onclick="closeSupplierModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="supplier-form" class="modal-form">
+      <input type="hidden" id="modal-supplier-id">
+      <div class="modal-body">
+        <div class="form-group full-width">
+          <label>Company Name</label>
+          <input type="text" id="modal-supplier-company" class="form-control" placeholder="Enter company name" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Person</label>
+          <input type="text" id="modal-supplier-person" class="form-control" placeholder="Enter contact person's name" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="modal-supplier-email" class="form-control" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" id="modal-supplier-phone" class="form-control" placeholder="Enter phone number" required>
+        </div>
+        <div class="form-group full-width">
+          <label>Address</label>
+          <textarea id="modal-supplier-address" class="form-control textarea-vertical" rows="2" placeholder="Enter full address..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="resetSupplierForm()">Reset</button>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeSupplierModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Supplier</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= EMPLOYEE CRUD MODAL ================= -->
+<div id="employee-modal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="employee-modal-title" class="modal-title"><i class="fa-solid fa-user-shield"></i> Add Employee</h2>
+      <button class="icon-btn" onclick="closeEmployeeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="employee-form" class="modal-form">
+      <input type="hidden" id="modal-employee-id">
+      <div class="modal-body">
+        <div class="form-group full-width">
+          <label>Full Name</label>
+          <input type="text" id="modal-employee-name" class="form-control" placeholder="Enter full name" required>
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="modal-employee-username" class="form-control" placeholder="Enter unique username" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="modal-employee-email" class="form-control" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group">
+          <label>Role ID</label>
+          <input type="number" id="modal-employee-role" class="form-control" placeholder="1=Admin, 2=Mgr, 3=Staff" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="modal-employee-password" class="form-control" placeholder="Enter new password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="resetEmployeeForm()">Reset</button>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Employee</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= CUSTOM CONFIRMATION MODAL ================= -->
+<div id="confirm-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-body confirm-body">
+      <div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h3 id="confirm-title" class="confirm-title">Are you sure?</h3>
+      <p id="confirm-message" class="confirm-message">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer confirm-footer">
+      <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-action-btn">Yes, Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/api-client.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

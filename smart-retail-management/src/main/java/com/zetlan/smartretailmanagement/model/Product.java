@@ -18,14 +18,20 @@ public class Product {
     @Column(nullable = false, length = 150)
     private String name;
 
-    // Enterprise standard for financial precision (never use double for currency)
+    // NEW: Added description field
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
 
-    // Establishes the Foreign Key relationship in MySQL dynamically
+    // NEW: Added image URL field
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -40,16 +46,21 @@ public class Product {
 
     public Product() {}
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getSku() { return sku; }
     public void setSku(String sku) { this.sku = sku; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
     public Integer getStockQuantity() { return stockQuantity; }
     public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
     public LocalDateTime getCreatedAt() { return createdAt; }

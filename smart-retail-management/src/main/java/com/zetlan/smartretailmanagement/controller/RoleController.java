@@ -1,6 +1,6 @@
 package com.zetlan.smartretailmanagement.controller;
 
-import com.zetlan.smartretailmanagement.model.Role;
+import com.zetlan.smartretailmanagement.dto.RoleDTO;
 import com.zetlan.smartretailmanagement.service.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +19,18 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<Role> addRole(@RequestBody Role role) {
-        Role createdRole = roleService.createRole(role);
+    public ResponseEntity<RoleDTO> addRole(@RequestBody RoleDTO dto) {
+        RoleDTO createdRole = roleService.createRole(dto);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RoleDTO> getRoleById(@PathVariable Long id) {
+        return new ResponseEntity<>(roleService.getRoleById(id), HttpStatus.OK);
     }
 }

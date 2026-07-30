@@ -9,7 +9,6 @@ public class SupplierDTO {
     private String phone;
     private String address;
 
-    // Standard Constructors
     public SupplierDTO() {}
 
     // Getters and Setters
