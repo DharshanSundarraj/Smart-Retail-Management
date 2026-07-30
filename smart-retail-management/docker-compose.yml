@@ -40,7 +40,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/zetlan_db?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: zetlan_user
-      SPRING_DATASOURCE_PASSWORD: zetlan$1234
+      SPRING_DATASOURCE_PASSWORD: zetlanpassword   # <-- ✅ Fixed to match MySQL password!
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - zetlan-network
