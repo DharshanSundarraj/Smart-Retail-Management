@@ -18,7 +18,7 @@ services:
     networks:
       - zetlan-network
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,8 +26,8 @@ services:
   # ==========================================
   # ZetLan Full-Stack Application Service
   # ==========================================
-zetlan-app:
-  image: soryah/smart-retail-management:latest
+  zetlan-app:
+    image: soryah/smart-retail-management:latest
     container_name: zetlan-backend
     restart: always
     depends_on:
