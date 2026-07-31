@@ -26,10 +26,8 @@ services:
   # ==========================================
   # ZetLan Full-Stack Application Service
   # ==========================================
-  zetlan-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+zetlan-app:
+  image: soryah/smart-retail-management:latest
     container_name: zetlan-backend
     restart: always
     depends_on:
