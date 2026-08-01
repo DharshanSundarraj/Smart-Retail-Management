@@ -37,3 +37,4 @@ jobs:
 
       - name: Push Docker Image
         run: docker push soryah/smart-retail-management:latest
+# Trigger GitHub Actions
